@@ -1,0 +1,69 @@
+version: '3.4'
+
+services:
+
+    jira-software:
+        container_name: jira
+        build:
+          context: ./jira-software
+          dockerfile: Dockerfile
+          args:
+            db_host: postgres
+            db_port: 5432        
+        image: chrisperkins/jira-software-with-db:0.0.1
+        ports:
+            - "8080:8080"
+        volumes:
+            - type: volume
+              source: jira-software-data
+              target: /var/atlassian/application-data/jira
+        environment:
+            ATL_JDBC_URL: jdbc:postgres://postgres:5432/test
+            ATL_JDBC_USER: user
+            ATL_JDBC_PASSWORD: password
+            ATL_DB_DRIVER: org.postgresql.Driver
+            ATL_DB_TYPE: postgres95
+            ATL_DB_SCHEMA_NAME: public
+
+    postgres:
+        image: postgres:9.5
+        ports:
+            - "5432:5432"
+        volumes: 
+            - type: volume
+              source: postgres_db
+              target: /var/lib/postgresql/data
+        environment: 
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: test
+            POSTGRES_USER: user
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8090:8080
+    
+    # mysql:
+    #     container_name: mysql_db
+    #     image: mysql:8.0
+    #     ports:
+    #         - "3306:3306"
+    #     volumes:
+    #         - type: volume
+    #           source: mysql-db
+    #           target: /var/lib/mysql
+    #     environment: 
+    #         MYSQL_ROOT_PASSWORD: password
+    #         MYSQL_ROOT_HOST: local
+    #         MYSQL_DATABASE: test
+    #         MYSQL_USER: user
+    #         MYSQL_PASSWORD: password123
+
+networks:
+    jira:
+
+volumes:
+    jira-software-data:
+    # mysql-db:
+    postgres_db:
