@@ -3,6 +3,7 @@ FROM atlassian/jira-software
 ARG db_host
 ARG db_port
 
+ADD ./init.sql /docker-entrypoint-initdb.d/init.sql
 ADD ./wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
