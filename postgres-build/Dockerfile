@@ -1,3 +1,4 @@
-FROM postgres:9.5
+FROM postgres:9.6.3
 
-ADD ./init.sql /docker-entrypoint-initdb.d/init.sql
+ADD ./init.sh /docker-entrypoint-initdb.d/init.sh
+RUN  chmod +x /docker-entrypoint-initdb.d/init.sh
