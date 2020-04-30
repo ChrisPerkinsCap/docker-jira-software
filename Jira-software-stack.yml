@@ -1,0 +1,56 @@
+version: '3.4'
+
+services:
+
+    jira-software:
+      container_name: jira
+      build:
+        context: ./jira-software
+        dockerfile: Dockerfile
+        args:
+          db_host: postgres
+          db_port: 5432
+      image: chrisperkins/jira-software:7.13.5-ubuntu
+      ports:
+        - "9090:8080"
+        - "5005:5005"
+      volumes:
+        - type: volume
+          source: jira-software-data
+          target: /var/atlassian/application-data/jira
+      networks:
+        - jira_net
+    #   environment:
+    #     ATL_JDBC_URL: jdbc:postgres://postgres:5432/test
+    #     ATL_JDBC_USER: user
+    #     ATL_JDBC_PASSWORD: password
+    #     ATL_DB_DRIVER: org.postgresql.Driver
+    #     ATL_DB_TYPE: postgres96
+    #     ATL_DB_SCHEMA_NAME: public
+
+    postgres:
+      build:
+        context: ./postgres-build
+        dockerfile: ./Dockerfile
+      image: chrisperkins/postgres:9.6.3
+      container_name: postgres_jira
+      ports:
+        - "5432"
+      volumes:
+        - type: volume
+          source: postgres_data
+          target: /var/lib/postgresql/data
+      environment:
+        - DB_PASS=admin
+        - DB_NAME=jira
+        - DB_USER=admin
+      networks:
+        - jira_net
+
+networks:
+  jira_net:
+    driver: bridge
+
+volumes:
+    jira-software-data:
+    postgres_data:
