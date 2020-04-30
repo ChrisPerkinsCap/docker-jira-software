@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+
+  jira-software:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        db_host: postgres
+        db_port: 5432
+    image: chrisperkins/jira-software:7.13.5-ubuntu
