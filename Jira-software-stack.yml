@@ -11,6 +11,15 @@ services:
           db_host: postgres
           db_port: 5432
       image: chrisperkins/jira-software:7.13.5-ubuntu
+      deploy:
+        replicas: 1
+        update_config:
+          parallelism: 2
+          delay: 10s
+        restart:_policy:
+          condition: any
+          delay: 5s
+          max_attempts: 3
       ports:
         - "9090:8080"
         - "5005:5005"
@@ -34,6 +43,14 @@ services:
         dockerfile: ./Dockerfile
       image: chrisperkins/postgres:9.6.3
       container_name: postgres_jira
+      deploy:
+        replicas: 1
+        update_config:
+          parallelism: 2
+          delay: 10s
+        restart:_policy:
+          condition: any
+          max_attempts: 3
       ports:
         - "5432"
       volumes:
