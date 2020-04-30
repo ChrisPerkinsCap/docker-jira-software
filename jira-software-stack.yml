@@ -4,12 +4,6 @@ services:
 
     jira-software:
       container_name: jira
-      build:
-        context: ./jira-software
-        dockerfile: Dockerfile
-        args:
-          db_host: postgres
-          db_port: 5432
       image: chrisperkins/jira-software:7.13.5-ubuntu
       deploy:
         replicas: 1
@@ -38,9 +32,6 @@ services:
     #     ATL_DB_SCHEMA_NAME: public
 
     postgres:
-      build:
-        context: ./postgres-build
-        dockerfile: ./Dockerfile
       image: chrisperkins/postgres:9.6.3
       container_name: postgres_jira
       deploy:
