@@ -46,28 +46,8 @@ services:
         - DB_USER=admin
       networks:
         - jira_net
-
-    # adminer:
-    #     image: adminer
-    #     restart: always
-    #     ports:
-    #         - 8090:8080
     
-    # mysql:
-    #     container_name: mysql_db
-    #     image: mysql:8.0
-    #     ports:
-    #         - "3306:3306"
-    #     volumes:
-    #         - type: volume
-    #           source: mysql-db
-    #           target: /var/lib/mysql
-    #     environment: 
-    #         MYSQL_ROOT_PASSWORD: password
-    #         MYSQL_ROOT_HOST: local
-    #         MYSQL_DATABASE: test
-    #         MYSQL_USER: user
-    #         MYSQL_PASSWORD: password123
+
 
 networks:
   jira_net:
@@ -75,5 +55,4 @@ networks:
 
 volumes:
     jira-software-data:
-    # mysql-db:
     postgres_data:
