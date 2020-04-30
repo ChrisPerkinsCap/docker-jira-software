@@ -46,8 +46,6 @@ services:
         - DB_USER=admin
       networks:
         - jira_net
-    
-
 
 networks:
   jira_net:
