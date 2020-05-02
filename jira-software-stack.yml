@@ -3,8 +3,7 @@ version: '3.4'
 services:
 
     jira-software:
-      container_name: jira
-      image: chrisperkins/jira-software:7.13.5-ubuntu
+      image: atlassian/jira-software:8.9.0-EAP01-ubuntu
       deploy:
         replicas: 1
         update_config:
@@ -23,17 +22,19 @@ services:
           target: /var/atlassian/application-data/jira
       networks:
         - jira_net
-    #   environment:
-    #     ATL_JDBC_URL: jdbc:postgres://postgres:5432/test
-    #     ATL_JDBC_USER: user
-    #     ATL_JDBC_PASSWORD: password
-    #     ATL_DB_DRIVER: org.postgresql.Driver
-    #     ATL_DB_TYPE: postgres96
-    #     ATL_DB_SCHEMA_NAME: public
+      # environment:
+        # JIRA_DATABASE_URL: jdbc:postgres://postgres:5432/jira
+        # JIRA_DB_USER: admin
+        # JIRA_DB_PASSWORD: admin
+        # ATL_JDBC_URL: jdbc:postgres://postgres:5432/jira
+        # ATL_JDBC_USER: admin
+        # ATL_JDBC_PASSWORD: admin
+        # ATL_DB_DRIVER: org.postgresql.Driver
+        # ATL_DB_TYPE: postgres96
+        # ATL_DB_SCHEMA_NAME: public
 
     postgres:
       image: chrisperkins/postgres:9.6.3
-      container_name: postgres_jira
       deploy:
         replicas: 1
         update_config:
@@ -43,7 +44,7 @@ services:
           condition: any
           max_attempts: 3
       ports:
-        - "5432"
+        - "5432:5432"
       volumes:
         - type: volume
           source: postgres_data
@@ -57,7 +58,7 @@ services:
 
 networks:
   jira_net:
-    driver: overlay
+    external: true
 
 volumes:
     jira-software-data:
